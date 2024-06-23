@@ -10,4 +10,10 @@ class OrderTest :
         val supplier = order.getProductSupplier()
         supplier shouldBe ProductSupplier.GROCERY
       }
+
+      "Order for Bananas has supermarket supplier" {
+        val order = Order(OrderId(1), Product.BANANA)
+        val supplier = order.getProductSupplier()
+        supplier shouldBe ProductSupplier.SUPERMARKET
+      }
     })
