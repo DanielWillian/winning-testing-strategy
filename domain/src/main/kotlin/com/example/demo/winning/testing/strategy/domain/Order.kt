@@ -8,7 +8,8 @@ enum class Product {
 class OrderId(val id: Long)
 
 enum class OrderStatus {
-  CREATED
+  CREATED,
+  READY
 }
 
 class Order(val orderId: OrderId, val product: Product, val status: OrderStatus) {
@@ -18,5 +19,12 @@ class Order(val orderId: OrderId, val product: Product, val status: OrderStatus)
         Product.BANANA -> ProductSupplier.SUPERMARKET
       }
 
-  fun trySetOrderToReady(response: SupplierResponse): Order = this
+  fun copy(
+      orderId: OrderId = this.orderId,
+      product: Product = this.product,
+      status: OrderStatus = this.status
+  ) = Order(orderId, product, status)
+
+  fun trySetOrderToReady(response: SupplierResponse): Order =
+      if (response.code == 200) copy(status = OrderStatus.READY) else this
 }

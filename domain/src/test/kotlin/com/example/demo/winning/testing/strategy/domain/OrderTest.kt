@@ -22,4 +22,10 @@ class OrderTest :
         val updatedOrder = order.trySetOrderToReady(SupplierResponse(404))
         updatedOrder.status shouldBe OrderStatus.CREATED
       }
+
+      "Order ready after a 200 response from supplier" {
+        val order = Order(OrderId(1), Product.BANANA, OrderStatus.CREATED)
+        val updatedOrder = order.trySetOrderToReady(SupplierResponse(200))
+        updatedOrder.status shouldBe OrderStatus.READY
+      }
     })
