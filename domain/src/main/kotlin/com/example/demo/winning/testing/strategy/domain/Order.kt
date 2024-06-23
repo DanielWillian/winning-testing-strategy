@@ -5,17 +5,18 @@ enum class Product {
   BANANA
 }
 
-enum class ProductSupplier {
-  GROCERY,
-  SUPERMARKET
+class OrderId(val id: Long)
+
+enum class OrderStatus {
+  CREATED
 }
 
-class OrderId(private val id: Long)
-
-class Order(private val orderId: OrderId, private val product: Product) {
+class Order(val orderId: OrderId, val product: Product, val status: OrderStatus) {
   fun getProductSupplier(): ProductSupplier =
       when (product) {
         Product.APPLE -> ProductSupplier.GROCERY
         Product.BANANA -> ProductSupplier.SUPERMARKET
       }
+
+  fun trySetOrderToReady(response: SupplierResponse): Order = this
 }
