@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.1.5'
 	id 'org.jetbrains.kotlin.jvm' version '1.9.24'
 	id 'org.jetbrains.kotlin.plugin.spring' version '1.9.24'
+	id 'com.diffplug.spotless' version '6.25.0'
 }
 
 group = 'com.example.demo'
@@ -22,6 +23,7 @@ allprojects {
 	apply plugin: 'io.spring.dependency-management'
 	apply plugin: 'org.jetbrains.kotlin.jvm'
 	apply plugin: 'org.jetbrains.kotlin.plugin.spring'
+	apply plugin: 'com.diffplug.spotless'
 
 	java {
 		toolchain {
@@ -47,5 +49,19 @@ allprojects {
 
 	tasks.named('test') {
 		useJUnitPlatform()
+	}
+}
+
+spotless {
+	format 'misc', {
+		target '**/*.gradle', '.gitattributes', '.gitignore'
+
+		trimTrailingWhitespace()
+		indentWithTabs()
+		endWithNewline()
+	}
+	kotlin {
+		target '**/*.kt'
+		ktfmt("0.49")
 	}
 }
