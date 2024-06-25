@@ -6,3 +6,7 @@ enum class ProductSupplier {
 }
 
 class SupplierResponse(val code: Int)
+
+interface SupplierService {
+  fun getProductStatus(orderId: OrderId, supplier: ProductSupplier): SupplierResponse?
+}
