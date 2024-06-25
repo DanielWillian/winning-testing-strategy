@@ -4,6 +4,7 @@ import com.example.demo.winning.testing.strategy.domain.Order
 import com.example.demo.winning.testing.strategy.domain.OrderId
 import com.example.demo.winning.testing.strategy.domain.OrderNotFoundException
 import com.example.demo.winning.testing.strategy.domain.OrderRepository
+import com.example.demo.winning.testing.strategy.domain.OrderService
 import com.example.demo.winning.testing.strategy.domain.OrderStatus
 import com.example.demo.winning.testing.strategy.domain.Product
 import com.example.demo.winning.testing.strategy.domain.ProductSupplier
@@ -17,20 +18,23 @@ import org.junit.jupiter.api.assertThrows
 
 class OrderServiceImplTest :
     StringSpec({
+      val orderId = OrderId(1)
+      lateinit var repository: OrderRepository
+      lateinit var supplierService: SupplierService
+      lateinit var orderService: OrderService
+
+      beforeEach {
+        repository = mockk<OrderRepository>()
+        supplierService = mockk<SupplierService>()
+        orderService = OrderServiceImpl(repository, supplierService)
+      }
+
       "Try to set to ready a non existing order" {
-        val repository = mockk<OrderRepository>()
-        val supplierService = mockk<SupplierService>()
-        val orderService = OrderServiceImpl(repository, supplierService)
-        val orderId = OrderId(1)
         every { repository.getOrder(orderId) } returns null
         assertThrows<OrderNotFoundException> { orderService.trySetOrderToReady(orderId) }
       }
 
       "Try to set an order ready with non existing response" {
-        val repository = mockk<OrderRepository>()
-        val supplierService = mockk<SupplierService>()
-        val orderService = OrderServiceImpl(repository, supplierService)
-        val orderId = OrderId(1)
         every { repository.getOrder(orderId) } returns
             Order(orderId, Product.BANANA, OrderStatus.CREATED)
         every { supplierService.getProductStatus(orderId, ProductSupplier.SUPERMARKET) } returns
@@ -40,10 +44,6 @@ class OrderServiceImplTest :
       }
 
       "Try to set an order ready with negative response" {
-        val repository = mockk<OrderRepository>()
-        val supplierService = mockk<SupplierService>()
-        val orderService = OrderServiceImpl(repository, supplierService)
-        val orderId = OrderId(1)
         every { repository.getOrder(orderId) } returns
             Order(orderId, Product.BANANA, OrderStatus.CREATED)
         every { supplierService.getProductStatus(orderId, ProductSupplier.SUPERMARKET) } returns
@@ -53,10 +53,6 @@ class OrderServiceImplTest :
       }
 
       "Try to set an order ready with positive response" {
-        val repository = mockk<OrderRepository>()
-        val supplierService = mockk<SupplierService>()
-        val orderService = OrderServiceImpl(repository, supplierService)
-        val orderId = OrderId(1)
         every { repository.getOrder(orderId) } returns
             Order(orderId, Product.BANANA, OrderStatus.CREATED)
         every { supplierService.getProductStatus(orderId, ProductSupplier.SUPERMARKET) } returns
