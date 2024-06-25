@@ -1,2 +1,5 @@
 dependencies {
+	implementation project(":domain")
+	testImplementation 'io.kotest:kotest-runner-junit5'
+	testImplementation 'io.mockk:mockk'
 }
