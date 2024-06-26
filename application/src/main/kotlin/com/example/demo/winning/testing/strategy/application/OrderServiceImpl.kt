@@ -18,6 +18,8 @@ class OrderServiceImpl(
     val productSupplier = order.getProductSupplier()
     val response = supplierService.getProductStatus(orderId, productSupplier) ?: return order
     val updatedOrder = order.trySetOrderToReady(response)
+    if (order == updatedOrder) return order
+    repository.updateOrder(updatedOrder)
     return updatedOrder
   }
 }

@@ -13,6 +13,7 @@ import com.example.demo.winning.testing.strategy.domain.SupplierService
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import org.junit.jupiter.api.assertThrows
 
@@ -61,6 +62,7 @@ class OrderServiceImplTest :
                   Order(orderId, it.first, OrderStatus.CREATED)
               every { supplierService.getProductStatus(orderId, it.second) } returns
                   SupplierResponse(200)
+              justRun { repository.updateOrder(Order(orderId, it.first, OrderStatus.READY)) }
               val order = orderService.trySetOrderToReady(orderId)
               order.status shouldBe OrderStatus.READY
             }
