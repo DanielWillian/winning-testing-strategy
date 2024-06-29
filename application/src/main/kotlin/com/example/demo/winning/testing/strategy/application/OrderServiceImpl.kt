@@ -6,7 +6,9 @@ import com.example.demo.winning.testing.strategy.domain.OrderNotFoundException
 import com.example.demo.winning.testing.strategy.domain.OrderRepository
 import com.example.demo.winning.testing.strategy.domain.OrderService
 import com.example.demo.winning.testing.strategy.domain.SupplierService
+import org.springframework.stereotype.Service
 
+@Service
 class OrderServiceImpl(
     private val repository: OrderRepository,
     private val supplierService: SupplierService

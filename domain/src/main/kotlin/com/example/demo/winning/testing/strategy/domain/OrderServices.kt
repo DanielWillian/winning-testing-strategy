@@ -8,4 +8,6 @@ interface OrderService {
 
 interface OrderRepository {
   fun getOrder(orderId: OrderId): Order?
+
+  fun updateOrder(order: Order)
 }

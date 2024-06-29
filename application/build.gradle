@@ -1,5 +1,6 @@
 dependencies {
 	implementation project(":domain")
+	implementation 'org.springframework:spring-context'
 	testImplementation 'io.kotest:kotest-runner-junit5'
 	testImplementation 'io.mockk:mockk'
 }

@@ -1,2 +1,6 @@
 dependencies {
+	implementation project(":domain")
+	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+	implementation 'io.github.rybalkinsd:kohttp'
+	runtimeOnly 'org.postgresql:postgresql'
 }
