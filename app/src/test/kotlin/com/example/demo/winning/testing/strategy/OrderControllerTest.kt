@@ -74,6 +74,26 @@ class OrderControllerTest : FunSpec() {
       val json = objectMapper.readTree(response.body())
       test("Order is ready") { json.get("status").textValue() shouldBe "READY" }
     }
+
+    context("Update apple order to ready all in one") {
+      mockServerClient
+          .`when`(HttpRequest.request().withPath("/apples/1"))
+          .respond(HttpResponse.response().withStatusCode(200))
+
+      val port = environment.getProperty("local.server.port")
+      val baseUrl = "http://localhost:$port"
+      val httpRequest =
+          java.net.http.HttpRequest.newBuilder()
+              .uri(URI.create("$baseUrl/orders/1/all-in-one-set-ready"))
+              .POST(java.net.http.HttpRequest.BodyPublishers.noBody())
+              .build()
+      val response =
+          httpClient.send(httpRequest, java.net.http.HttpResponse.BodyHandlers.ofString())
+
+      test("Response is 200") { response.statusCode() shouldBe 200 }
+      val json = objectMapper.readTree(response.body())
+      test("Order is ready") { json.get("status").textValue() shouldBe "READY" }
+    }
   }
 
   companion object {
